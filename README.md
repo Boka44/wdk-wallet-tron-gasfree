@@ -23,24 +23,31 @@ npm install @tetherto/wdk-wallet-tron-gasfree
 
 ## Quick Start
 
-Before running this example, set `WDK_SEED_PHRASE` and obtain the current `GASFREE_SERVICE_PROVIDER` address from your provider's `/api/v1/config/provider/all` endpoint.
+Run this example in a trusted Node.js process. Set `WDK_SEED_PHRASE`, obtain `GASFREE_API_KEY` and `GASFREE_API_SECRET` from the [GasFree Developers Center](https://developer.gasfree.io/), and set `GASFREE_SERVICE_PROVIDER` to an address returned by an authenticated request to `/tron/api/v1/config/provider/all`. See the [GasFree documentation](https://docs.gasfree.io/) for request signing and mainnet contract addresses.
+
+> **API credentials:** Never embed the API secret in browser, mobile, or distributed desktop code.
 
 ```javascript
 import WalletManagerTronGasfree from '@tetherto/wdk-wallet-tron-gasfree'
 
 const seedPhrase = process.env.WDK_SEED_PHRASE
 const serviceProvider = process.env.GASFREE_SERVICE_PROVIDER
+const gasFreeApiKey = process.env.GASFREE_API_KEY
+const gasFreeApiSecret = process.env.GASFREE_API_SECRET
+const MAINNET_VERIFYING_CONTRACT = 'TFFAMQLZybALaLb4uxHA9RBE7pxhUAjF3U'
 
-if (!seedPhrase || !serviceProvider) {
-  throw new Error('Set WDK_SEED_PHRASE and GASFREE_SERVICE_PROVIDER')
+if (!seedPhrase || !serviceProvider || !gasFreeApiKey || !gasFreeApiSecret) {
+  throw new Error('Set WDK_SEED_PHRASE, GASFREE_SERVICE_PROVIDER, GASFREE_API_KEY, and GASFREE_API_SECRET')
 }
 
 const wallet = new WalletManagerTronGasfree(seedPhrase, {
   chainId: 728126428,
   provider: 'https://api.trongrid.io',
   gasFreeProvider: 'https://open.gasfree.io/tron',
+  gasFreeApiKey,
+  gasFreeApiSecret,
   serviceProvider,
-  verifyingContract: 'TFFAMQLZybALaLb4uxHA9RBE7pxhUAjF3U'
+  verifyingContract: MAINNET_VERIFYING_CONTRACT
 })
 
 try {
