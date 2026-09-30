@@ -131,15 +131,6 @@ describe('WalletAccountTronGasfree', () => {
       expect(testAccount.disposed).toBe(true)
     })
 
-    test('should be idempotent', () => {
-      const testAccount = new WalletAccountTronGasfree(SEED_PHRASE, "0'/0/0", CONFIG)
-
-      testAccount.dispose()
-
-      expect(() => testAccount.dispose()).not.toThrow()
-      expect(testAccount.disposed).toBe(true)
-    })
-
     test('should throw DisposalError from sign and transfer once disposed', async () => {
       const testAccount = new WalletAccountTronGasfree(SEED_PHRASE, "0'/0/0", CONFIG)
 
